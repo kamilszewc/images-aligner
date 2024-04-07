@@ -1,0 +1,12 @@
+{
+  "name" : "imagesaligner",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "ecea73ebbed41eb3f87603fcec2a8c86ffdbbb35",
+  "dependencies" : [ {
+    "name" : "gtest",
+    "version>=" : "1.14.0"
+  }, {
+    "name" : "opencv",
+    "version>=" : "4.8.0#1"
+  } ]
+}
