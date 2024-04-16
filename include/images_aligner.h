@@ -10,6 +10,7 @@
 #endif
 
 #include "images_collection.h"
+#include "position.h"
 
 class FeatureDescriptor;    // Forward declarations
 class FeatureMatcher;
@@ -24,6 +25,10 @@ private:
     bool isInClassInitialized_ = false;
     bool showMatches_ = false;
 
+    // Filter
+    bool isMatchingFilterEnabled = false;
+    Position p1_;
+    Position p2_;
 public:
     /**
      * Default constructor.
@@ -59,6 +64,10 @@ public:
     EXPORT void setShowMatches(bool showMatches) {
         showMatches_ = showMatches;
     }
+
+    EXPORT void setMatchingFilter(Position p1, Position p2);
+
+    EXPORT void unsetMatchingFilter();
 };
 
 #endif //IMAGESALIGNER_IMAGES_ALIGNER_H

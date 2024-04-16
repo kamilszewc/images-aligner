@@ -26,6 +26,29 @@ TEST(ImagesAlignerTest, DefaultConstructor) {
     cout << "Elapsed time: " << elapsedTime.count() << "ms";
 }
 
+TEST(ImagesAlignerTest, DefaultConstructorWithFilter) {
+    auto start = chrono::steady_clock::now();
+
+    vector<filesystem::path> filenames = {
+            R"(../../inputs/river/1.jpg)",
+            R"(../../inputs/river/2.jpg)",
+            R"(../../inputs/river/3.jpg)",
+            R"(../../inputs/river/4.jpg)",
+            R"(../../inputs/river/5.jpg)",
+            R"(../../inputs/river/6.jpg)"
+    };
+
+    ImagesAligner imagesAligner;
+    imagesAligner.setShowMatches(true);
+    imagesAligner.setMatchingFilter(Position(1000, 0), Position(4000, 2000));
+    auto imagesCollection = imagesAligner.align(filenames);
+    imagesCollection.saveFiles("../../results");
+
+    auto end = chrono::steady_clock::now();
+    chrono::duration<double, std::milli> elapsedTime = end - start;
+    cout << "Elapsed time: " << elapsedTime.count() << "ms";
+}
+
 TEST(ImagesAlignerTest, DefaultConstructorWithBlur) {
     auto start = chrono::steady_clock::now();
 

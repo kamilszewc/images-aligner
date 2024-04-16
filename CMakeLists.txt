@@ -21,6 +21,7 @@ add_library(images_aligner STATIC
         src/images_collection.cpp
 
         include/image.h
+        include/position.h
 
         include/images_aligner_exception.h
 )

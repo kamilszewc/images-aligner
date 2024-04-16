@@ -89,17 +89,30 @@ ImagesCollection ImagesAligner::align(const vector<filesystem::path> &filePaths,
 //            goodMatches.resize(featuresLimit);
 //        }
 
-        cout << "    Finding homography of image " << i << endl;
+
         std::vector<KeyPoint> kpts;
         std::vector<Point2f> obj;
         std::vector<Point2f> scene;
         for (size_t j=0; j < goodMatches.size(); j++) {
-            kpts.push_back(imageKeyPoints[goodMatches[j].queryIdx]);
-            obj.push_back(imageKeyPoints[goodMatches[j].queryIdx].pt);
+            auto imageKeyPoint = imageKeyPoints[goodMatches[j].queryIdx];
+
+            if (isMatchingFilterEnabled) {
+                float x = imageKeyPoint.pt.x;
+                float y = imageKeyPoint.pt.y;
+                cout << x << " " << y << " " << p1_.x << " " << p2_.x << " " << p1_.y << " " << p2_.y << endl;
+                if (x < p1_.x || x > p2_.x || y < p1_.y || y > p2_.y) {
+                    continue;
+                }
+            }
+
+            kpts.push_back(imageKeyPoint);
+            obj.push_back(imageKeyPoint.pt);
             scene.push_back(keyPoints[goodMatches[j].trainIdx].pt);
         }
+        cout << "    Using " << scene.size() << " matches" << endl;
 
         if (showMatches_) {
+            cout << "    Showing matches of image " << i << endl;
             Mat showMatches;
             drawKeypoints(imageGrey, kpts, showMatches, Scalar(0, 255, 0));
             resize(showMatches, showMatches, Size(800, 600));
@@ -121,5 +134,15 @@ ImagesCollection ImagesAligner::align(const vector<filesystem::path> &filePaths,
     ImagesCollection outputImagesCollection {outputImages};
 
     return outputImagesCollection;
+}
+
+void ImagesAligner::setMatchingFilter(Position p1, Position p2) {
+    this->p1_ = p1;
+    this->p2_ = p2;
+    this->isMatchingFilterEnabled = true;
+}
+
+void ImagesAligner::unsetMatchingFilter() {
+    this->isMatchingFilterEnabled = false;
 }
 
